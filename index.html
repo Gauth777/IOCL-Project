@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>IOCL News Portal</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet"
+     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header>
+
+        <div class="logo-section">
+
+            <a href="https://iocl.com/" target="_blank">
+
+                <img src="iocl.webp"
+                    alt="IOCL Logo"
+                    class="logo">
+
+            </a>
+
+            <div>
+
+                <h1>IOCL News Portal</h1>
+
+                <p>Latest IndianOil News & Updates</p>
+
+            </div>
+
+        </div>
+
+        <div id="currentDate"></div>
+
+    </header>
+
+    <!-- SEARCH BAR + FILTERS -->
+
+    <section class="controls">
+
+        <input
+            type="text"
+            id="searchBox"
+            placeholder="Search News...">
+
+        <select id="monthFilter">
+
+            <option value="all">
+                All Months
+            </option>
+
+            <option value="2026-06">
+                June 2026
+            </option>
+
+            <option value="2026-05">
+                May 2026
+            </option>
+
+            <option value="2026-04">
+                April 2026
+            </option>
+
+        </select>
+
+        <select id="sortFilter">
+
+            <option value="newest">
+                Newest First
+            </option>
+
+            <option value="oldest">
+                Oldest First
+            </option>
+
+            <option value="title">
+                A-Z
+            </option>
+
+        </select>
+
+        <button id="darkModeBtn">
+
+            <i class="fas fa-moon"></i>
+
+        </button>
+
+    </section>
+
+    <!-- STATISTICS -->
+
+    <section class="stats">
+
+        <div class="stat-card">
+
+            <h3 id="totalNews">10</h3>
+
+            <p>Total News</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h3 id="selectedMonth">
+                All
+            </h3>
+
+            <p>Selected Month</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h3 id="liveTime">
+                Loading...
+            </h3>
+
+            <p>Current Time</p>
+
+        </div>
+
+    </section>
+
+    <!-- SMALL HERO -->
+
+    <section class="hero">
+
+        <div class="hero-overlay">
+
+            <h2>Stay Updated with IndianOil News</h2>
+
+            <p>
+
+                Discover the latest announcements,
+                projects, innovations and updates.
+
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- FEATURED NEWS -->
+
+    <section class="featured">
+
+        <h2>
+            🔥 Featured News
+        </h2>
+
+        <div id="featuredNews">
+
+        </div>
+
+    </section>
+
+    <!-- TOP NEWS -->
+
+    <section>
+
+        <h2 class="section-title">
+
+            Top 10 Monthly News
+
+        </h2>
+
+        <div
+            id="newsContainer"
+            class="news-grid">
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        © 2026 IOCL News Portal |
+        Internship Project
+
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
