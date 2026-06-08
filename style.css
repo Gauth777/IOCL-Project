@@ -20,28 +20,6 @@ body{
 }
 
 /* =========================
-   DARK MODE
-========================= */
-
-body.dark{
-    background:#121212;
-    color:white;
-}
-
-body.dark .stat-card,
-body.dark .news-card,
-body.dark .featured-card,
-body.dark .bookmark-card,
-body.dark .highlight-card,
-body.dark #notificationPanel,
-body.dark .modal-content,
-body.dark #weatherCard{
-    background:#1f1f1f;
-    color:white;
-}
-
-
-/* =========================
    LOADER
 ========================= */
 
@@ -266,20 +244,6 @@ header{
 /* =========================
    TICKER
 ========================= */
-
-/* .ticker{
-
-    background:#f37021;
-
-    color:white;
-
-    padding:10px;
-
-    font-weight:bold;
-
-    cursor: pointer;
-
-} */
 .ticker{
 
     background:#f37021;
@@ -560,77 +524,6 @@ header{
    QUICK FILTERS
 ========================= */
 
-/* .quick-filters{
-
-    width:95%;
-
-    margin:20px auto;
-
-    display:flex;
-
-    flex-wrap:wrap;
-
-    gap:10px;
-
-}
-
-.filter-btn{
-
-    border:none;
-
-    background:#005baa;
-
-    color:white;
-
-    padding:10px 15px;
-
-    border-radius:20px;
-
-    cursor:pointer;
-
-    transition:.3s;
-
-}
-
-.filter-btn:hover{
-
-    background:#f37021;
-
-} */
-
-/* .filter-btn{
-
-    background:#005baa;
-
-    color:white;
-
-    border:none;
-
-    padding:20px;
-
-    border-radius:15px;
-
-    cursor:pointer;
-
-    font-size:18px;
-
-    font-weight:600;
-
-    min-height:80px;
-
-    transition:0.3s;
-
-    box-shadow:0 4px 12px rgba(0,0,0,0.15);
-
-}
-
-.filter-btn:hover{
-
-    background:#f37021;
-
-    transform:translateY(-4px);
-
-} */
  .quick-filters-section{
 
     width:95%;

@@ -688,62 +688,6 @@ if(clearHistoryBtn){
     );
 
 }
-// const clearHistoryBtn =
-// document.getElementById(
-// "clearHistoryBtn"
-// );
-
-// if(clearHistoryBtn){
-
-//     clearHistoryBtn.addEventListener(
-//         "click",
-//         () => {
-
-//             const confirmDelete =
-//             confirm(
-//                 "Clear all search history?"
-//             );
-
-//             if(confirmDelete){
-
-//                 localStorage.removeItem(
-//                     "searchHistory"
-//                 );
-
-//                 document.getElementById(
-//                     "searchHistory"
-//                 ).innerHTML = "";
-
-//             }
-
-//         }
-//     );
-
-// }
-// const clearHistoryBtn =
-
-// document.getElementById(
-// "clearHistoryBtn"
-// );
-
-// if(clearHistoryBtn){
-
-//     clearHistoryBtn.addEventListener(
-//         "click",
-//         () => {
-
-//             localStorage.removeItem(
-//                 "searchHistory"
-//             );
-
-//             historyContainer.innerHTML =
-//             "";
-
-//         }
-//     );
-
-// }
-
 // =========================
 // QUICK FILTERS
 // =========================
