@@ -5,18 +5,37 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-    <title>IOCL News Portal</title>
-
-    <link rel="stylesheet" href="style.css">
+    <title>
+        IndianOil News Dashboard
+    </title>
 
     <link rel="stylesheet"
-     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        href="style.css">
+
+    <link rel="icon"
+        href="images/iocl.webp">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 </head>
 
 <body>
+
+    <!-- LOADER -->
+
+    <div id="loader">
+
+        <div class="spinner"></div>
+
+        <h2>
+            Loading IOCL News Dashboard...
+        </h2>
+
+    </div>
 
     <!-- HEADER -->
 
@@ -24,129 +43,611 @@
 
         <div class="logo-section">
 
-            <a href="https://iocl.com/" target="_blank">
+            <a href="https://iocl.com/"
+                target="_blank">
 
-                <img src="iocl.webp"
-                    alt="IOCL Logo"
-                    class="logo">
+                <img
+                    src="iocl.webp"
+                    class="logo"
+                    alt="IOCL Logo">
 
             </a>
 
             <div>
 
-                <h1>IOCL News Portal</h1>
+                <h1>
+                    IOCL News Dashboard
+                </h1>
 
-                <p>Latest IndianOil News & Updates</p>
+                <p>
+                    IndianOil News Monitoring System
+                </p>
 
             </div>
 
         </div>
 
-        <div id="currentDate"></div>
+        <div class="header-right">
+
+            <div id="currentDate"></div>
+
+            <button id="notificationBell">
+
+                🔔
+
+                <span id="notificationCount">
+
+                    3
+
+                </span>
+
+            </button>
+
+        </div>
 
     </header>
 
-    <!-- SEARCH BAR + FILTERS -->
+    <!-- NOTIFICATION PANEL -->
+
+    <div id="notificationPanel">
+
+        <h3>
+            Notifications
+        </h3>
+
+        <ul id="notificationList">
+            <li>
+
+    <span class="notification-link">
+
+        New Green Hydrogen News Added
+
+        <span class="arrow">
+
+            →
+
+        </span>
+
+    </span>
+
+</li>
+
+<li>
+
+    <span class="notification-link">
+
+        Safety Award Update
+
+        <span class="arrow">
+
+            →
+
+        </span>
+
+    </span>
+
+</li>
+
+<li>
+
+    <span class="notification-link">
+
+        Digital Initiative Published
+
+        <span class="arrow">
+
+            →
+
+        </span>
+
+    </span>
+    </li>
+    
+        </ul>
+
+    </div>
+ 
+<!-- 
+            <li>
+                New Green Hydrogen News Added
+            </li>
+
+            <li>
+                Safety Award Update
+            </li>
+
+            <li>
+                Digital Initiative Published
+            </li> -->
+
+
+    <!-- NEWS TICKER -->
+
+    <section class="ticker">
+
+        <marquee>
+            <div class="ticker">
+
+           <span class="ticker-text">
+
+<!-- 
+            📢 Green Hydrogen Project |
+            📢 AI Monitoring Initiative |
+            📢 Refinery Expansion |
+            📢 Renewable Energy Mission -->
+            <div class="ticker">
+
+    <span class="ticker-link">
+        📢 Green Hydrogen Project
+    </span>
+
+    |
+
+    <span class="ticker-link">
+        📢 Refinery Expansion
+    </span>
+
+    |
+
+    <span class="ticker-link">
+        📢 New Recruitment Notice
+    </span>
+    |
+    <span class="ticker-link">
+        📢 AI Monitoring Initiative
+    </span>
+
+</div>
+                </span>
+
+</div>
+
+        </marquee>
+
+    </section>
+
+    <!-- WELCOME SECTION -->
+
+    <section class="welcome-banner">
+
+        <h2>
+
+            Welcome to IOCL News Dashboard
+
+        </h2>
+
+        <p>
+
+            Real-Time News Monitoring
+            and Analytics Platform
+
+        </p>
+
+    </section>
+
+    <!-- SEARCH CONTROLS -->
 
     <section class="controls">
 
-        <input
-            type="text"
-            id="searchBox"
-            placeholder="Search News...">
+        <div class="search-wrapper">
+
+            <input
+                type="text"
+                id="searchBox"
+                placeholder="Search News...">
+
+            <span id="clearSearch">
+
+                ✖
+
+            </span>
+
+            <button id="voiceSearchBtn">
+
+                🎤
+
+            </button>
+            <button id="refreshBtn">
+
+    <i class="fas fa-sync-alt"></i>
+
+</button>
+            
+
+            <div id="suggestions"></div>
+
+        </div>
 
         <select id="monthFilter">
 
             <option value="all">
+
                 All Months
+
             </option>
 
             <option value="2026-06">
+
                 June 2026
+
             </option>
 
             <option value="2026-05">
+
                 May 2026
-            </option>
 
-            <option value="2026-04">
-                April 2026
-            </option>
-
-        </select>
-
-        <select id="sortFilter">
-
-            <option value="newest">
-                Newest First
-            </option>
-
-            <option value="oldest">
-                Oldest First
-            </option>
-
-            <option value="title">
-                A-Z
             </option>
 
         </select>
 
         <button id="darkModeBtn">
 
-            <i class="fas fa-moon"></i>
+            🌙
 
         </button>
 
     </section>
 
-    <!-- STATISTICS -->
+    <!-- SEARCH HISTORY -->
+     <section class="search-history">
+
+    <div class="history-header">
+
+        <h2>
+
+            Recent Searches
+
+        </h2>
+
+        <button id="clearHistoryBtn">
+
+            🗑 Clear History
+
+        </button>
+
+    </div>
+
+    <div id="searchHistory">
+
+    </div>
+
+</section>
+
+<!-- <section class="search-history">
+
+        <h2>
+
+            Recent Searches
+
+        </h2>
+
+        <div id="searchHistory">
+
+        </div>
+
+    </section> -->
+    <!-- <section class="quick-filters-section"> -->
+
+    <!-- <h2>
+        Quick Filters
+    </h2> -->
+    <!-- <section class="quick-filters-section">
+
+    <h2>Quick Filters</h2>
+
+    <div class="quick-filters">
+
+        <div class="filter-card" data-category="all">
+            🌐
+            <span>All News</span>
+        </div>
+
+        <div class="filter-card" data-category="official">
+            📢
+            <span>Official News</span>
+        </div>
+
+        <div class="filter-card" data-category="financial">
+            💰
+            <span>Financial News</span>
+        </div>
+
+        <div class="filter-card" data-category="recruitment">
+            👨‍💼
+            <span>Recruitment</span>
+        </div>
+
+        <div class="filter-card" data-category="digital">
+            💻
+            <span>Digital Projects</span>
+        </div>
+
+    </div>
+
+</section> -->
+
+    <!-- <div class="quick-filters">
+
+        <button class="filter-btn" data-category="all">
+            All
+        </button>
+
+        <button class="filter-btn" data-category="official">
+            Official
+        </button>
+
+        <button class="filter-btn" data-category="financial">
+            Financial
+        </button>
+
+        <button class="filter-btn" data-category="recruitment">
+            Recruitment
+        </button>
+
+        <button class="filter-btn" data-category="digital">
+            Digital
+        </button>
+
+        <button class="filter-btn" data-category="safety">
+            Safety
+        </button>
+
+        <button class="filter-btn" data-category="csr">
+            CSR
+        </button>
+
+    </div>
+
+</section> -->
+
+    <!-- QUICK FILTERS
+
+    <section class="quick-filters">
+
+        <button class="filter-btn"
+            data-category="all">
+
+            All
+
+        </button>
+
+        <button class="filter-btn"
+            data-category="official">
+
+            Official
+
+        </button>
+
+        <button class="filter-btn"
+            data-category="financial">
+
+            Financial
+
+        </button>
+
+        <button class="filter-btn"
+            data-category="recruitment">
+
+            Recruitment
+
+        </button>
+
+        <button class="filter-btn"
+            data-category="digital">
+
+            Digital
+
+        </button>
+
+        <button class="filter-btn"
+            data-category="safety">
+
+            Safety
+
+        </button>
+
+        <button class="filter-btn"
+            data-category="csr">
+
+            CSR
+
+        </button>
+
+    </section> -->
+
+    <!-- WEATHER -->
+
+    <section class="weather-widget">
+
+        <h2>
+
+            Weather Information
+
+        </h2>
+
+        <div id="weatherCard">
+
+            <h3>
+
+                Barauni Refinery
+
+            </h3>
+
+            <p>
+
+                35°C
+
+            </p>
+
+            <p>
+
+                Sunny
+
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- STATS -->
 
     <section class="stats">
 
         <div class="stat-card">
 
-            <h3 id="totalNews">10</h3>
+            <h3 id="totalNews">
 
-            <p>Total News</p>
+                10
 
-        </div>
-
-        <div class="stat-card">
-
-            <h3 id="selectedMonth">
-                All
             </h3>
 
-            <p>Selected Month</p>
+            <p>
+
+                Total News
+
+            </p>
 
         </div>
 
         <div class="stat-card">
 
             <h3 id="liveTime">
+
                 Loading...
+
             </h3>
 
-            <p>Current Time</p>
+            <p>
+
+                Live Time
+
+            </p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h3 id="apiStatus">
+
+                Connected
+
+            </h3>
+
+            <p>
+
+                API Status
+
+            </p>
+
+        </div>
+        <div class="stat-card">
+
+    <h3 id="lastSync">
+
+        Not Synced
+
+    </h3>
+
+    <p>
+
+        Last Sync
+
+    </p>
+
+</div>  
+
+    </section>
+
+        <section class="quick-filters-section">
+
+    <!-- <h2>
+        Quick Filters
+    </h2> -->
+    <section class="quick-filters-section">
+
+    <h2>Quick Filters</h2>
+
+    <div class="quick-filters">
+
+        <div class="filter-card" data-category="all">
+            🌐
+            <span>All News</span>
+        </div>
+
+        <div class="filter-card" data-category="official">
+            📢
+            <span>Official News</span>
+        </div>
+
+        <div class="filter-card" data-category="financial">
+            💰
+            <span>Financial News</span>
+        </div>
+
+        <div class="filter-card" data-category="recruitment">
+            👨‍💼
+            <span>Recruitment</span>
+        </div>
+
+        <div class="filter-card" data-category="digital">
+            💻
+            <span>Digital Projects</span>
+        </div>
+
+    </div>
+
+</section>
+<!-- REFINERIES -->
+
+    <section class="refineries">
+
+        <h2>
+
+            Major IOCL Refineries
+
+        </h2>
+
+        <div class="refinery-grid">
+
+            <div class="refinery-card">
+                Panipat Refinery
+            </div>
+
+            <!-- <div class="refinery-card">
+                Paradip Refinery
+            </div> -->
+
+            <div class="refinery-card">
+                Gujarat Refinery
+            </div>
+
+            <div class="refinery-card">
+                Mathura Refinery
+            </div>
+
+            <div class="refinery-card">
+                Haldia Refinery
+            </div>
+
+            <div class="refinery-card">
+                Barauni Refinery
+            </div>
 
         </div>
 
     </section>
 
-    <!-- SMALL HERO -->
+    <!-- TODAY'S HIGHLIGHTS -->
 
-    <section class="hero">
+    <section class="highlights">
 
-        <div class="hero-overlay">
+        <h2>
 
-            <h2>Stay Updated with IndianOil News</h2>
+            🔥 Today's Highlights
 
-            <p>
+        </h2>
 
-                Discover the latest announcements,
-                projects, innovations and updates.
-
-            </p>
+        <div id="highlightContainer">
 
         </div>
 
@@ -157,7 +658,9 @@
     <section class="featured">
 
         <h2>
-            🔥 Featured News
+
+            Featured News
+
         </h2>
 
         <div id="featuredNews">
@@ -166,13 +669,29 @@
 
     </section>
 
-    <!-- TOP NEWS -->
+    <!-- BOOKMARKS -->
+
+    <section class="bookmarks">
+
+        <h2>
+
+            ⭐ Bookmarked News
+
+        </h2>
+
+        <div id="bookmarkContainer">
+
+        </div>
+
+    </section>
+
+    <!-- NEWS SECTION -->
 
     <section>
 
         <h2 class="section-title">
 
-            Top 10 Monthly News
+            Top Monthly News
 
         </h2>
 
@@ -184,12 +703,106 @@
 
     </section>
 
+    <!-- MODAL -->
+
+    <div
+        id="newsModal"
+        class="modal">
+
+        <div class="modal-content">
+
+            <span id="closeModal">
+
+                &times;
+
+            </span>
+
+            <h2 id="modalTitle"></h2>
+
+            <p id="modalDate"></p>
+
+            <p id="modalDescription"></p>
+
+            <div class="share-buttons">
+
+                <button id="shareWhatsapp">
+
+                    WhatsApp
+
+                </button>
+
+                <button id="copyLink">
+
+                    Copy Link
+
+                </button>
+
+                <button id="shareEmail">
+
+                    Email
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BACK TO TOP -->
+
+    <button id="topBtn">
+
+        ↑
+
+    </button>
+
     <!-- FOOTER -->
 
     <footer>
 
-        © 2026 IOCL News Portal |
-        Internship Project
+        <h3>
+
+            IOCL News Dashboard
+
+        </h3>
+        <p>
+
+            Internship Project |
+            IndianOil Corporation Limited
+
+        </p>
+
+        <div class="social-links">
+
+            <a href="https://www.instagram.com/indianoilcorp"
+                target="_blank">
+
+                <i class="fab fa-instagram"></i>
+
+            </a>
+
+            <a href="https://www.linkedin.com/company/indian-oil-corp-limited"
+                target="_blank">
+
+                <i class="fab fa-linkedin"></i>
+
+            </a>
+
+            <a href="https://www.youtube.com/channel/UC5ho18VZHwEFSahW0Q_o-6g/feed"
+                target="_blank">
+
+                <i class="fab fa-youtube"></i>
+
+            </a>
+
+        </div>
+
+        <p>
+
+            © 2026 IOCL News Dashboard
+
+        </p>
 
     </footer>
 
