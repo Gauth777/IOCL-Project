@@ -106,18 +106,7 @@ ${news.description}
 ${news.date}
 </p>
 
-<a
-href="#"
-class="read-more"
-onclick="openModal(
-'${news.title}',
-'${news.date}',
-'${news.description}'
-)">
-
-View Details →
-
-</a>
+<a href="${news.url}" target="_blank" class="read-more">Read More →</a>
 
 <br><br>
 
