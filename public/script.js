@@ -2,109 +2,42 @@
 // SAMPLE NEWS DATA
 // =========================
 
-const newsData = [
+let newsData = [];
+let featuredNewsData = null;
 
-{
-title:"IndianOil Digital Transformation Initiative",
-description:"IndianOil expands digital innovation projects across refineries and business units.",
-date:"2026-06-10",
-month:"2026-06",
-category:"digital",
-image:"assets/images/digital-transformation.jpg",
-url:"https://iocl.com/"
-},
-
-{
-title:"Refinery Modernization Project",
-description:"Major refinery modernization announced to improve efficiency.",
-date:"2026-06-09",
-month:"2026-06",
-category:"official",
-image:"assets/images/refinery-modernization.jpg",
-url:"https://iocl.com/"
-},
-
-{
-title:"Green Hydrogen Expansion",
-description:"IndianOil invests heavily in green hydrogen infrastructure.",
-date:"2026-06-08",
-month:"2026-06",
-category:"csr",
-image:"assets/images/green-hydrogen.jpg",
-url:"https://iocl.com/"
-},
-
-{
-title:"Pipeline Infrastructure Upgrade",
-description:"New upgrades improve transportation efficiency.",
-date:"2026-06-07",
-month:"2026-06",
-category:"official",
-image:"assets/images/pipeline-upgrade.jpg",
-url:"https://iocl.com/"
-},
-
-{
-title:"AI Monitoring System",
-description:"AI-powered monitoring deployed in refinery operations.",
-date:"2026-06-06",
-month:"2026-06",
-category:"digital",
-image:"assets/images/ai-monitoring.jpg",
-url:"https://iocl.com/"
-},
-
-{
-title:"Solar Energy Program",
-description:"IndianOil expands renewable energy projects.",
-date:"2026-06-05",
-month:"2026-06",
-category:"csr",
-image:"assets/images/solar-energy.jpg",
-url:"https://iocl.com/"
-},
-
-{
-title:"Employee Skill Development",
-description:"New employee upskilling initiatives launched.",
-date:"2026-06-04",
-month:"2026-06",
-category:"recruitment",
-image:"assets/images/skill-development.jpg",
-url:"https://iocl.com/"
-},
-
-{
-title:"New LPG Distribution Network",
-description:"Improved LPG distribution across multiple states.",
-date:"2026-06-03",
-month:"2026-06",
-category:"official",
-image:"assets/images/lpg-network.jpg",
-url:"https://iocl.com/"
-},
-
-{
-title:"Research Collaboration",
-description:"Research partnership with leading institutions.",
-date:"2026-06-02",
-month:"2026-06",
-category:"financial",
-image:"assets/images/research-collaboration.jpg",
-url:"https://iocl.com/"
-},
-
-{
-title:"Safety Excellence Award",
-description:"IndianOil receives national safety recognition.",
-date:"2026-06-01",
-month:"2026-06",
-category:"safety",
-image:"assets/images/safety-award.jpg",
-url:"https://iocl.com/"
+function updateLastSync(){
+    const now = new Date();
+    const syncTime = now.toLocaleTimeString();
+    const lastSyncEl = document.getElementById("lastSync");
+    if (lastSyncEl) {
+        lastSyncEl.textContent = "✓ " + syncTime;
+    }
 }
 
-];
+function updateLastUpdated() {
+    // Dummy function to prevent ReferenceError from original code
+}
+
+async function fetchDashboardData() {
+  try {
+    const [allRes, featuredRes] = await Promise.all([
+      fetch('/api/news/all'),
+      fetch('/api/news/featured')
+    ]);
+    
+    newsData = await allRes.json();
+    featuredNewsData = await featuredRes.json();
+    
+    // Initial Render
+    renderNews(newsData);
+    loadHighlights();
+    
+    // Update Sync Time
+    updateLastSync();
+  } catch (error) {
+    console.error("Error fetching news from API:", error);
+  }
+}
 
 // =========================
 // RENDER NEWS
@@ -122,43 +55,25 @@ newsContainer.innerHTML = "";
 
 // FEATURED NEWS
 
-if(data.length > 0){
+let featuredItem = null;
+if (data.length === newsData.length && featuredNewsData) {
+    featuredItem = featuredNewsData;
+} else if (data.length > 0) {
+    featuredItem = data[0];
+}
 
-featuredNews.innerHTML = `
-
-<div class="featured-card">
-
-<img src="${data[0].image}" alt="Featured">
-
-<div class="featured-content">
-
-<span class="category">
-${data[0].category}
-</span>
-
-<h3>
-${data[0].title}
-</h3>
-
-<p>
-${data[0].description}
-</p>
-
-<a
-href="${data[0].url}"
-target="_blank"
-class="read-more">
-
-Read More →
-
-</a>
-
-</div>
-
-</div>
-
-`;
-
+if (featuredItem) {
+    featuredNews.innerHTML = `
+        <div class="featured-card">
+            <img src="${featuredItem.image}" alt="Featured">
+            <div class="featured-content">
+                <span class="category">${featuredItem.category}</span>
+                <h3>${featuredItem.title}</h3>
+                <p>${featuredItem.description}</p>
+                <a href="${featuredItem.url}" target="_blank" class="read-more">Read More →</a>
+            </div>
+        </div>
+    `;
 }
 
 // NEWS CARDS
@@ -416,12 +331,10 @@ renderNews(filtered);
 }
 
 // =========================
-// INITIAL LOAD
+// INITIAL LOAD (API FETCH)
 // =========================
 
-renderNews(newsData);
-
-loadHighlights();
+fetchDashboardData();
 // =========================
 // SEARCH SUGGESTIONS
 // =========================
@@ -1156,42 +1069,9 @@ refreshBtn.classList.remove(
 );
 
 },800);
-// alert(
-// "News Refreshed Successfully"
-// );
-// =========================
-// LAST SYNC
-// =========================
 
-function updateLastSync(){
-
-    const now = new Date();
-
-    const syncTime =
-
-        now.toLocaleTimeString();
-
-    document.getElementById(
-        "lastSync"
-    ).textContent =
-
-    "✓ " + syncTime;
-
-}
-
-// Run once when page loads
-
-updateLastSync();
-
-// Reload dashboard data
-
-renderNews(
-newsData
-);
-
-loadHighlights();
-
-updateLastUpdated();
+// Fetch news dynamically from the REST API
+fetchDashboardData();
 
 });
 
