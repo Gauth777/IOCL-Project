@@ -2,14 +2,29 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios'); // For live GNews API calls
-console.log('GNEWS_API_KEY from env:', process.env.GNEWS_API_KEY);
-// Simple in-memory cache for live news (15-minute TTL)
+require("dotenv").config();
+console.log("GNEWS key loaded:", Boolean(process.env.GNEWS_API_KEY));// Simple in-memory cache for live news (15-minute TTL)
 const cache = {
   data: null,
   timestamp: 0,
   ttl: 15 * 60 * 1000 // 15 minutes in ms
 };
+function detectCategory(article) {
+  const text = `${article.title || ""} ${article.description || ""} ${article.content || ""}`.toLowerCase();
+  if (text.includes("recruitment") || text.includes("job") || text.includes("career")) {
+    return "jobs";
+  }
+  if (text.includes("safety") || text.includes("accident") || text.includes("incident")) {
+    return "safety";
+  }
+  return article.category || "general";
+}
 
+function getMonthFromDate(dateString) {
+  const date = new Date(dateString);
+  if (isNaN(date)) return "";
+  return date.toLocaleString('default', { month: 'long' });
+}
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -28,7 +43,7 @@ async function getNewsData() {
         q: '"IOCL" OR "Indian Oil" OR "IndianOil" OR "Indian Oil Corporation"',
         lang: 'en',
         country: 'in',
-        max: 50,
+        max: 10,
         token: apiKey
       }
     });
@@ -37,24 +52,44 @@ async function getNewsData() {
       id: a.url,
       title: a.title,
       description: a.description,
-      category: a.category || 'general',
+      category: detectCategory(a),
       image: a.image,
       date: a.publishedAt,
+      month: getMonthFromDate(a.publishedAt),
       source: a.source?.name || '',
       url: a.url,
       featured: false
     }));
+    // Deduplicate by title+url (case-insensitive)
+    const seen = new Set();
+    const unique = [];
+    for (const item of transformed) {
+      const key = (item.title + item.url).toLowerCase();
+      if (!seen.has(key)) {
+        seen.add(key);
+        unique.push(item);
+      }
+    }
     // Cache result
-    cache.data = transformed;
+    cache.data = unique;
     cache.timestamp = Date.now();
-    return transformed;
+    return unique;
   } catch (err) {
     console.error('Live news fetch failed, falling back to static data:', err.message);
     // Fallback to static JSON file
     try {
       const dataPath = path.join(__dirname, 'data', 'news.json');
       const rawData = fs.readFileSync(dataPath, 'utf8');
-      return JSON.parse(rawData);
+      const parsed = JSON.parse(rawData);
+      // Enrich static data with month and category detection
+      const enriched = parsed.map(item => ({
+        ...item,
+        category: item.category || 'general',
+        month: getMonthFromDate(item.date),
+        // Ensure proper url field if missing (use id if present)
+        url: item.url || item.id || item.id,
+      }));
+      return enriched;
     } catch (e) {
       console.error('Error reading fallback news data:', e);
       return [];
