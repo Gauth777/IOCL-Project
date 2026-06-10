@@ -10,7 +10,7 @@ description:"IndianOil expands digital innovation projects across refineries and
 date:"2026-06-10",
 month:"2026-06",
 category:"digital",
-image:"digital-transformation.jpg",
+image:"assets/images/digital-transformation.jpg",
 url:"https://iocl.com/"
 },
 
@@ -20,7 +20,7 @@ description:"Major refinery modernization announced to improve efficiency.",
 date:"2026-06-09",
 month:"2026-06",
 category:"official",
-image:"refinery-modernization.jpg",
+image:"assets/images/refinery-modernization.jpg",
 url:"https://iocl.com/"
 },
 
@@ -30,7 +30,7 @@ description:"IndianOil invests heavily in green hydrogen infrastructure.",
 date:"2026-06-08",
 month:"2026-06",
 category:"csr",
-image:"green-hydrogen.jpg",
+image:"assets/images/green-hydrogen.jpg",
 url:"https://iocl.com/"
 },
 
@@ -40,7 +40,7 @@ description:"New upgrades improve transportation efficiency.",
 date:"2026-06-07",
 month:"2026-06",
 category:"official",
-image:"pipeline-upgrade.jpg",
+image:"assets/images/pipeline-upgrade.jpg",
 url:"https://iocl.com/"
 },
 
@@ -50,7 +50,7 @@ description:"AI-powered monitoring deployed in refinery operations.",
 date:"2026-06-06",
 month:"2026-06",
 category:"digital",
-image:"ai-monitoring.jpg",
+image:"assets/images/ai-monitoring.jpg",
 url:"https://iocl.com/"
 },
 
@@ -60,7 +60,7 @@ description:"IndianOil expands renewable energy projects.",
 date:"2026-06-05",
 month:"2026-06",
 category:"csr",
-image:"solar-energy.jpg",
+image:"assets/images/solar-energy.jpg",
 url:"https://iocl.com/"
 },
 
@@ -70,7 +70,7 @@ description:"New employee upskilling initiatives launched.",
 date:"2026-06-04",
 month:"2026-06",
 category:"recruitment",
-image:"skill-development.jpg",
+image:"assets/images/skill-development.jpg",
 url:"https://iocl.com/"
 },
 
@@ -80,7 +80,7 @@ description:"Improved LPG distribution across multiple states.",
 date:"2026-06-03",
 month:"2026-06",
 category:"official",
-image:"lpg-network.jpg",
+image:"assets/images/lpg-network.jpg",
 url:"https://iocl.com/"
 },
 
@@ -90,7 +90,7 @@ description:"Research partnership with leading institutions.",
 date:"2026-06-02",
 month:"2026-06",
 category:"financial",
-image:"research-collaboration.jpg",
+image:"assets/images/research-collaboration.jpg",
 url:"https://iocl.com/"
 },
 
@@ -100,7 +100,7 @@ description:"IndianOil receives national safety recognition.",
 date:"2026-06-01",
 month:"2026-06",
 category:"safety",
-image:"safety-award.jpg",
+image:"assets/images/safety-award.jpg",
 url:"https://iocl.com/"
 }
 
