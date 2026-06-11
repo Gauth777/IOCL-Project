@@ -1352,3 +1352,102 @@ body:not(.dark) #lastSync {
     color: #005baa !important;
 
 }
+
+/* =========================
+   DYNAMIC TICKER LINKS
+========================= */
+
+.ticker a.ticker-link {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.ticker a.ticker-link:hover {
+    text-decoration: underline;
+}
+
+.ticker-separator {
+    margin: 0 10px;
+    opacity: 0.7;
+}
+
+/* =========================
+   NOTIFICATION ANCHOR LINKS
+========================= */
+
+#notificationPanel a.notification-link {
+    color: #222;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}
+
+#notificationPanel a.notification-link:hover {
+    text-decoration: underline;
+}
+
+#notificationPanel a.notification-link:hover .arrow {
+    opacity: 1;
+    margin-left: 10px;
+}
+
+body.dark #notificationPanel a.notification-link {
+    color: white !important;
+}
+
+/* =========================
+   BOOKMARK TOGGLE STATE
+========================= */
+
+.bookmark-btn.bookmarked {
+    background: #dc3545;
+}
+
+.bookmark-btn.bookmarked:hover {
+    background: #b02a37;
+}
+
+/* =========================
+   BOOKMARK CARD CONTENT
+========================= */
+
+.bookmark-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.bookmark-card-content a {
+    color: #005baa;
+    text-decoration: none;
+}
+
+.bookmark-card-content a:hover {
+    text-decoration: underline;
+}
+
+body.dark .bookmark-card-content a {
+    color: #4da6ff !important;
+}
+
+/* =========================
+   HIGHLIGHT LINK (anchor)
+========================= */
+
+a.highlight-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+}
+
+a.highlight-link:hover {
+    text-decoration: underline;
+}
+
+a.highlight-link:hover .arrow {
+    opacity: 1;
+    margin-left: 10px;
+}
