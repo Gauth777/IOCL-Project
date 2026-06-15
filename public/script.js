@@ -413,27 +413,87 @@ if (clearHistoryBtn) {
 }
 
 // =========================
-// QUICK FILTERS
+// QUICK FILTERS (TOPIC MODAL)
 // =========================
 
-document
-    .querySelectorAll(".filter-card")
-    .forEach(btn => {
-        btn.addEventListener("click", () => {
-            const category = btn.dataset.category;
+document.querySelectorAll(".filter-card").forEach(card => {
+  card.addEventListener("click", async () => {
+    const topic = card.dataset.topic;
+    if (!topic) return;
+    await openTopicModal(topic);
+  });
+});
 
-            if (category === "all") {
-                renderNews(newsData);
-                return;
-            }
+async function openTopicModal(topic) {
+  const modal = document.getElementById("topicModal");
+  const modalTitle = document.getElementById("topicModalTitle");
+  const modalContent = document.getElementById("topicModalContent");
 
-            const filtered = newsData.filter(news =>
-                news.category.toLowerCase() === category
-            );
+  if (!modal || !modalTitle || !modalContent) return;
 
-            renderNews(filtered);
-        });
+  const topicLabels = {
+    barauni: "Barauni Refinery News",
+    official: "Official IOCL News",
+    financial: "Financial News",
+    recruitment: "Recruitment News",
+    digital: "Digital Projects News"
+  };
+
+  modalTitle.textContent = topicLabels[topic] || "Related News";
+  modalContent.innerHTML = "<p>Loading related news...</p>";
+  modal.classList.add("active");
+
+  try {
+    const res = await fetch(`/api/news/topic/${topic}`, { cache: "no-store" });
+    const articles = await res.json();
+
+    if (!Array.isArray(articles) || articles.length === 0) {
+      modalContent.innerHTML = "<p>No related news found right now. Please try again later.</p>";
+      return;
+    }
+
+    modalContent.innerHTML = articles.slice(0, 3).map(article => `
+      <div class="topic-news-item">
+        <h3>
+          <a href="${article.url}" target="_blank" rel="noopener noreferrer">
+            ${article.title}
+          </a>
+        </h3>
+        <p>${article.description || "No description available."}</p>
+        <small>${article.source || ""}</small>
+        <br>
+        <a href="${article.url}" target="_blank" rel="noopener noreferrer" class="read-more">
+          Read More →
+        </a>
+      </div>
+    `).join("");
+  } catch (error) {
+    console.error("Topic news fetch failed:", error);
+    modalContent.innerHTML = "<p>Unable to load related news right now.</p>";
+  }
+}
+
+// Modal close behavior
+const topicModal = document.getElementById("topicModal");
+const closeTopicModalBtn = document.getElementById("closeTopicModal");
+
+if (closeTopicModalBtn && topicModal) {
+    closeTopicModalBtn.addEventListener("click", () => {
+        topicModal.classList.remove("active");
     });
+}
+
+window.addEventListener("click", e => {
+    if (e.target === topicModal) {
+        topicModal.classList.remove("active");
+    }
+});
+
+window.addEventListener("keydown", e => {
+    if (e.key === "Escape" && topicModal && topicModal.classList.contains("active")) {
+        topicModal.classList.remove("active");
+    }
+});
 
 // =========================
 // VOICE SEARCH
