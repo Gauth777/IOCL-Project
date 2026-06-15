@@ -413,12 +413,12 @@ if (clearHistoryBtn) {
 }
 
 // =========================
-// QUICK FILTERS (TOPIC MODAL)
+// QUICK FILTERS & REFINERIES (TOPIC MODAL)
 // =========================
 
-document.querySelectorAll(".filter-card").forEach(card => {
-  card.addEventListener("click", async () => {
-    const topic = card.dataset.topic;
+document.querySelectorAll("[data-topic]").forEach(item => {
+  item.addEventListener("click", async () => {
+    const topic = item.dataset.topic;
     if (!topic) return;
     await openTopicModal(topic);
   });
@@ -436,7 +436,15 @@ async function openTopicModal(topic) {
     official: "Official IOCL News",
     financial: "Financial News",
     recruitment: "Recruitment News",
-    digital: "Digital Projects News"
+    digital: "Digital Projects News",
+    panipat: "Panipat Refinery News",
+    paradip: "Paradip Refinery News",
+    mathura: "Mathura Refinery News",
+    gujarat: "Gujarat Refinery News",
+    haldia: "Haldia Refinery News",
+    bongaigaon: "Bongaigaon Refinery News",
+    guwahati: "Guwahati Refinery News",
+    digboi: "Digboi Refinery News"
   };
 
   modalTitle.textContent = topicLabels[topic] || "Related News";
