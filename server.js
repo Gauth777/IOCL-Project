@@ -28,6 +28,9 @@ function getMonthFromDate(dateString) {
 }
 const app = express();
 const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 // Helper to read news from JSON database
 async function getNewsData() {
@@ -116,7 +119,15 @@ app.get('/api/news/topic/:topic', async (req, res) => {
     official: '"Indian Oil Corporation" OR "IOCL" OR "IndianOil"',
     financial: '"Indian Oil" profit OR "Indian Oil" shares OR "IOCL" financial OR dividend',
     recruitment: '"IOCL recruitment" OR "Indian Oil recruitment" OR "IndianOil careers"',
-    digital: '"Indian Oil" digital OR "IOCL" technology OR "IndianOil" automation'
+    digital: '"Indian Oil" digital OR "IOCL" technology OR "IndianOil" automation',
+    panipat: '"Panipat Refinery" OR "Indian Oil Panipat" OR "IOCL Panipat"',
+    paradip: '"Paradip Refinery" OR "Indian Oil Paradip" OR "IOCL Paradip"',
+    mathura: '"Mathura Refinery" OR "Indian Oil Mathura" OR "IOCL Mathura"',
+    gujarat: '"Gujarat Refinery" OR "Indian Oil Gujarat Refinery" OR "IOCL Gujarat"',
+    haldia: '"Haldia Refinery" OR "Indian Oil Haldia" OR "IOCL Haldia"',
+    bongaigaon: '"Bongaigaon Refinery" OR "Indian Oil Bongaigaon" OR "IOCL Bongaigaon"',
+    guwahati: '"Guwahati Refinery" OR "Indian Oil Guwahati" OR "IOCL Guwahati"',
+    digboi: '"Digboi Refinery" OR "Indian Oil Digboi" OR "IOCL Digboi"'
   };
 
   if (!topicQueries[topic]) {
