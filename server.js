@@ -9,6 +9,7 @@ const cache = {
   timestamp: 0,
   ttl: 15 * 60 * 1000 // 15 minutes in ms
 };
+const topicCaches = {};
 function detectCategory(article) {
   const text = `${article.title || ""} ${article.description || ""} ${article.content || ""}`.toLowerCase();
   if (text.includes("recruitment") || text.includes("job") || text.includes("career")) {
@@ -106,6 +107,78 @@ app.get('/api/health', (req, res) => {
 app.get('/api/news/all', async (req, res) => {
   const news = await getNewsData();
   res.json(news);
+});
+
+app.get('/api/news/topic/:topic', async (req, res) => {
+  const topic = req.params.topic;
+  const topicQueries = {
+    barauni: '"Barauni Refinery" OR "Indian Oil Barauni" OR "IOCL Barauni"',
+    official: '"Indian Oil Corporation" OR "IOCL" OR "IndianOil"',
+    financial: '"Indian Oil" profit OR "Indian Oil" shares OR "IOCL" financial OR dividend',
+    recruitment: '"IOCL recruitment" OR "Indian Oil recruitment" OR "IndianOil careers"',
+    digital: '"Indian Oil" digital OR "IOCL" technology OR "IndianOil" automation'
+  };
+
+  if (!topicQueries[topic]) {
+    return res.status(404).json({ error: 'Topic not found' });
+  }
+
+  // Check cache (15 min TTL)
+  const cached = topicCaches[topic];
+  if (cached && cached.data && (Date.now() - cached.timestamp) < 15 * 60 * 1000) {
+    return res.json(cached.data);
+  }
+
+  try {
+    const apiKey = process.env.GNEWS_API_KEY;
+    if (!apiKey) throw new Error('GNEWS_API_KEY not set');
+
+    const response = await axios.get('https://gnews.io/api/v4/search', {
+      params: {
+        q: topicQueries[topic],
+        lang: 'en',
+        country: 'in',
+        max: 10,
+        token: apiKey
+      }
+    });
+
+    const articles = response.data.articles || [];
+    if (articles.length === 0) {
+      throw new Error('No articles returned from GNews');
+    }
+
+    const transformed = articles.slice(0, 3).map(a => ({
+      id: a.url,
+      title: a.title,
+      description: a.description,
+      category: topic,
+      image: a.image,
+      date: a.publishedAt,
+      source: a.source?.name || '',
+      url: a.url
+    }));
+
+    // Cache the result
+    topicCaches[topic] = {
+      data: transformed,
+      timestamp: Date.now()
+    };
+
+    return res.json(transformed);
+  } catch (err) {
+    console.error(`Topic GNews fetch failed for ${topic}, falling back to static data:`, err.message);
+    try {
+      const fallbackPath = path.join(__dirname, 'data', 'topicFallback.json');
+      const fallbackRaw = fs.readFileSync(fallbackPath, 'utf8');
+      const fallbackJson = JSON.parse(fallbackRaw);
+      const topicFallback = fallbackJson[topic] || [];
+      return res.json(topicFallback);
+    } catch (fallbackErr) {
+      console.error(`Fallback data retrieval failed for ${topic}:`, fallbackErr);
+      return res.json([]);
+    }
+  }
 });
 
 app.get('/api/news/top', async (req, res) => {

@@ -1,0 +1,162 @@
+{
+  "barauni": [
+    {
+      "id": "barauni-fallback-1",
+      "title": "Barauni Refinery Expansion Project Progresses Smoothly",
+      "description": "IOCL's Barauni Refinery expansion project reaches new milestones, enhancing local crude processing capacity.",
+      "category": "barauni",
+      "image": "assets/images/refinery-modernization.jpg",
+      "date": "2026-06-12",
+      "source": "IndianOil",
+      "url": "https://iocl.com/news-releases"
+    },
+    {
+      "id": "barauni-fallback-2",
+      "title": "Environment Initiative at Indian Oil Barauni Refinery",
+      "description": "Barauni Refinery conducts extensive tree plantation drive and eco-restoration initiative in surrounding areas.",
+      "category": "barauni",
+      "image": "assets/images/solar-energy.jpg",
+      "date": "2026-06-08",
+      "source": "IndianOil",
+      "url": "https://iocl.com/news-releases"
+    },
+    {
+      "id": "barauni-fallback-3",
+      "title": "Safety Workshop Deployed at IOCL Barauni Refinery",
+      "description": "Barauni refinery hosts a safety workshop for operational employees to enforce strict zero-accident protocols.",
+      "category": "barauni",
+      "image": "assets/images/safety-award.jpg",
+      "date": "2026-06-05",
+      "source": "IndianOil",
+      "url": "https://iocl.com/news-releases"
+    }
+  ],
+  "official": [
+    {
+      "id": "official-fallback-1",
+      "title": "IndianOil Annual Performance Review Highlights Growth",
+      "description": "Indian Oil Corporation releases its annual official update on production, refinement output, and operations.",
+      "category": "official",
+      "image": "assets/images/refinery-modernization.jpg",
+      "date": "2026-06-11",
+      "source": "IndianOil",
+      "url": "https://iocl.com/news-releases"
+    },
+    {
+      "id": "official-fallback-2",
+      "title": "IOCL Expands Retail Fuel Network Across Key Regions",
+      "description": "Official announcement from IndianOil regarding new retail outlet openings to support growing energy demand.",
+      "category": "official",
+      "image": "assets/images/lpg-network.jpg",
+      "date": "2026-06-07",
+      "source": "IndianOil",
+      "url": "https://iocl.com/news-releases"
+    },
+    {
+      "id": "official-fallback-3",
+      "title": "IndianOil Corporate Social Responsibility Initiatives Launched",
+      "description": "IndianOil announces a series of healthcare and education support projects in rural areas surrounding key hubs.",
+      "category": "official",
+      "image": "assets/images/skill-development.jpg",
+      "date": "2026-06-03",
+      "source": "IndianOil",
+      "url": "https://iocl.com/news-releases"
+    }
+  ],
+  "financial": [
+    {
+      "id": "financial-fallback-1",
+      "title": "IndianOil Reports Strong Q1 Profit Performance",
+      "description": "IOCL announces financial results for the first quarter, highlighting solid operational revenue and market stability.",
+      "category": "financial",
+      "image": "assets/images/research-collaboration.jpg",
+      "date": "2026-06-10",
+      "source": "IndianOil",
+      "url": "https://iocl.com/news-releases"
+    },
+    {
+      "id": "financial-fallback-2",
+      "title": "IOCL Board Recommends Final Dividend for FY 2025-26",
+      "description": "Indian Oil Corporation Limited shareholders to receive dividend payouts as recommended by the executive board.",
+      "category": "financial",
+      "image": "assets/images/pipeline-upgrade.jpg",
+      "date": "2026-06-06",
+      "source": "IndianOil",
+      "url": "https://iocl.com/news-releases"
+    },
+    {
+      "id": "financial-fallback-3",
+      "title": "IndianOil Shares Witness Stable Growth on Stock Exchanges",
+      "description": "Market analysts highlight positive long-term outlook for IndianOil shares based on robust energy demand.",
+      "category": "financial",
+      "image": "assets/images/refinery-modernization.jpg",
+      "date": "2026-06-02",
+      "source": "IndianOil",
+      "url": "https://iocl.com/news-releases"
+    }
+  ],
+  "recruitment": [
+    {
+      "id": "recruitment-fallback-1",
+      "title": "IOCL Recruitment Drive Opens for Engineering Executives",
+      "description": "Indian Oil Careers portal invites online applications for graduate engineering apprentices across various disciplines.",
+      "category": "recruitment",
+      "image": "assets/images/skill-development.jpg",
+      "date": "2026-06-09",
+      "source": "IndianOil",
+      "url": "https://iocl.com/news-releases"
+    },
+    {
+      "id": "recruitment-fallback-2",
+      "title": "Indian Oil Careers: Non-Executive Vacancies Announced",
+      "description": "IOCL announces recruitment for technical non-executive profiles across multiple refinery units.",
+      "category": "recruitment",
+      "image": "assets/images/refinery-modernization.jpg",
+      "date": "2026-06-04",
+      "source": "IndianOil",
+      "url": "https://iocl.com/news-releases"
+    },
+    {
+      "id": "recruitment-fallback-3",
+      "title": "IOCL Appoints New Apprentices for Skill Training Programs",
+      "description": "IndianOil completes registration for new apprentices under the national skill development initiative.",
+      "category": "recruitment",
+      "image": "assets/images/skill-development.jpg",
+      "date": "2026-06-01",
+      "source": "IndianOil",
+      "url": "https://iocl.com/news-releases"
+    }
+  ],
+  "digital": [
+    {
+      "id": "digital-fallback-1",
+      "title": "IndianOil Digital Expansion Drives Smarter Refinery Operations",
+      "description": "IOCL deploys new enterprise AI and automation solutions for real-time monitoring and safety tracking.",
+      "category": "digital",
+      "image": "assets/images/digital-transformation.jpg",
+      "date": "2026-06-08",
+      "source": "IndianOil",
+      "url": "https://iocl.com/news-releases"
+    },
+    {
+      "id": "digital-fallback-2",
+      "title": "IOCL Implements Automation Software in Distribution Hubs",
+      "description": "IndianOil adopts digital logistics tools to optimize supply chain pipelines and fuel delivery speed.",
+      "category": "digital",
+      "image": "assets/images/ai-monitoring.jpg",
+      "date": "2026-06-05",
+      "source": "IndianOil",
+      "url": "https://iocl.com/news-releases"
+    },
+    {
+      "id": "digital-fallback-3",
+      "title": "IndianOil Cyber Security Upgrades for Tech Infrastructure",
+      "description": "IOCL rolls out enhanced digital security controls to protect refinery IT and operational database networks.",
+      "category": "digital",
+      "image": "assets/images/digital-transformation.jpg",
+      "date": "2026-06-02",
+      "source": "IndianOil",
+      "url": "https://iocl.com/news-releases"
+    }
+  ]
+}
