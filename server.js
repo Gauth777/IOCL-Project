@@ -3,12 +3,15 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios'); // For live GNews API calls
 require("dotenv").config();
-console.log("GNEWS key loaded:", Boolean(process.env.GNEWS_API_KEY));// Simple in-memory cache for live news (15-minute TTL)
+console.log("GNEWS key loaded:", Boolean(process.env.GNEWS_API_KEY));// Simple in-memory cache for live news (5-hour TTL)
+const CACHE_TTL_MS = 5 * 60 * 60 * 1000; // 5 hours
+
 const cache = {
   data: null,
   timestamp: 0,
-  ttl: 15 * 60 * 1000 // 15 minutes in ms
+  ttl: CACHE_TTL_MS
 };
+
 const topicCaches = {};
 function detectCategory(article) {
   const text = `${article.title || ""} ${article.description || ""} ${article.content || ""}`.toLowerCase();
@@ -131,9 +134,13 @@ app.get('/api/news/topic/:topic', async (req, res) => {
     return res.status(404).json({ error: 'Topic not found' });
   }
 
-  // Check cache (15 min TTL)
+  // Check cache (5 hour TTL)
   const cached = topicCaches[topic];
-  if (cached && cached.data && (Date.now() - cached.timestamp) < 15 * 60 * 1000) {
+  if (
+  cached &&
+  cached.data &&
+  Date.now() - cached.timestamp < CACHE_TTL_MS
+  ) {
     return res.json(cached.data);
   }
 
