@@ -554,12 +554,21 @@ const notificationBell = document.getElementById("notificationBell");
 const notificationPanel = document.getElementById("notificationPanel");
 
 if (notificationBell && notificationPanel) {
-    notificationBell.addEventListener("click", () => {
-        if (notificationPanel.style.display === "block") {
-            notificationPanel.style.display = "none";
-        } else {
-            notificationPanel.style.display = "block";
-        }
+    notificationBell.addEventListener("click", function (event) {
+        event.stopPropagation();
+
+        notificationPanel.style.display =
+            notificationPanel.style.display === "block"
+                ? "none"
+                : "block";
+    });
+
+    notificationPanel.addEventListener("click", function (event) {
+        event.stopPropagation();
+    });
+
+    document.addEventListener("click", function () {
+        notificationPanel.style.display = "none";
     });
 }
 
