@@ -453,31 +453,123 @@ async function openTopicModal(topic) {
 
   try {
     const res = await fetch(`/api/news/topic/${topic}`, { cache: "no-store" });
-    const articles = await res.json();
+    let articles = [];
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        articles = data;
+      }
+    }
 
-    if (!Array.isArray(articles) || articles.length === 0) {
+    // Client-side safety net: use already-loaded newsData if endpoint fails or returns empty
+    const safeArticles =
+      Array.isArray(articles) && articles.length > 0
+        ? articles
+        : newsData
+            .filter(article =>
+              article &&
+              article.title &&
+              typeof article.url === "string" &&
+              article.url.startsWith("http")
+            )
+            .slice(0, 3)
+            .map(article => ({
+              ...article,
+              matchType: "general-live"
+            }));
+
+    if (!safeArticles || safeArticles.length === 0) {
       modalContent.innerHTML = "<p>No related news found right now. Please try again later.</p>";
       return;
     }
 
-    modalContent.innerHTML = articles.slice(0, 3).map(article => `
-      <div class="topic-news-item">
-        <h3>
-          <a href="${article.url}" target="_blank" rel="noopener noreferrer">
-            ${article.title}
-          </a>
-        </h3>
-        <p>${article.description || "No description available."}</p>
-        <small>${article.source || ""}</small>
-        <br>
-        <a href="${article.url}" target="_blank" rel="noopener noreferrer" class="read-more">
-          Read More →
+    modalContent.innerHTML = safeArticles.slice(0, 3).map(article => {
+  // Only render if article has a valid HTTP/HTTPS URL
+  if (
+    !article ||
+    !article.title ||
+    typeof article.url !== "string" ||
+    !(article.url.startsWith("http://") || article.url.startsWith("https://"))
+  ) {
+    return "";
+  }
+
+  // Honest matchType label
+  let matchLabel = "";
+  if (article.matchType === "general-live") {
+    matchLabel = '<span class="match-label">Current related IOCL news</span>';
+  } else if (article.matchType === "broader-live") {
+    matchLabel = '<span class="match-label">Broader live match</span>';
+  }
+
+  return `
+    <div class="topic-news-item">
+
+      <h3>
+        <a
+          href="${article.url}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          ${article.title}
         </a>
-      </div>
-    `).join("");
+      </h3>
+
+      <p>
+        ${article.description || "No description available."}
+      </p>
+
+      <small>
+        ${article.source || ""}
+      </small>
+      ${matchLabel}
+
+      <br>
+      <a
+        href="${article.url}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="read-more"
+      >
+        Read More →
+      </a>
+
+    </div>
+  `;
+}).join("");
   } catch (error) {
     console.error("Topic news fetch failed:", error);
-    modalContent.innerHTML = "<p>Unable to load related news right now.</p>";
+
+    // Final client-side safety net on network error
+    const fallbackFromPage = newsData
+      .filter(article =>
+        article &&
+        article.title &&
+        typeof article.url === "string" &&
+        article.url.startsWith("http")
+      )
+      .slice(0, 3);
+
+    if (fallbackFromPage.length > 0) {
+      modalContent.innerHTML = fallbackFromPage.map(article => `
+        <div class="topic-news-item">
+          <h3>
+            <a href="${article.url}" target="_blank" rel="noopener noreferrer">
+              ${article.title}
+            </a>
+          </h3>
+          <p>${article.description || "No description available."}</p>
+          <small>${article.source || ""}</small>
+          <span class="match-label">Current related IOCL news</span>
+          <br>
+          <a href="${article.url}" target="_blank" rel="noopener noreferrer" class="read-more">
+            Read More →
+          </a>
+        </div>
+      `).join("");
+    } else {
+      modalContent.innerHTML = "<p>Unable to load related news right now.</p>";
+    }
   }
 }
 

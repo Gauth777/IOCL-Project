@@ -112,112 +112,378 @@ app.get('/api/news/all', async (req, res) => {
   res.json(news);
 });
 
-app.get('/api/news/topic/:topic', async (req, res) => {
-  const topic = req.params.topic;
-  const topicQueries = {
-    barauni: '"Barauni Refinery" OR "Indian Oil Barauni" OR "IOCL Barauni"',
-    official: '"Indian Oil Corporation" OR "IOCL" OR "IndianOil"',
-    financial: '"Indian Oil" profit OR "Indian Oil" shares OR "IOCL" financial OR dividend',
-    recruitment: '"IOCL recruitment" OR "Indian Oil recruitment" OR "IndianOil careers"',
-    digital: '"Indian Oil" digital OR "IOCL" technology OR "IndianOil" automation',
-    panipat: '"Panipat Refinery" OR "Indian Oil Panipat" OR "IOCL Panipat"',
-    paradip: '"Paradip Refinery" OR "Indian Oil Paradip" OR "IOCL Paradip"',
-    mathura: '"Mathura Refinery" OR "Indian Oil Mathura" OR "IOCL Mathura"',
-    gujarat: '"Gujarat Refinery" OR "Indian Oil Gujarat Refinery" OR "IOCL Gujarat"',
-    haldia: '"Haldia Refinery" OR "Indian Oil Haldia" OR "IOCL Haldia"',
-    bongaigaon: '"Bongaigaon Refinery" OR "Indian Oil Bongaigaon" OR "IOCL Bongaigaon"',
-    guwahati: '"Guwahati Refinery" OR "Indian Oil Guwahati" OR "IOCL Guwahati"',
-    digboi: '"Digboi Refinery" OR "Indian Oil Digboi" OR "IOCL Digboi"'
-  };
+function isValidHttpUrl(value) {
+  try {
+    const parsedUrl = new URL(value);
+    return (
+      parsedUrl.protocol === "http:" ||
+      parsedUrl.protocol === "https:"
+    );
+  } catch {
+    return false;
+  }
+}
 
-  if (!topicQueries[topic]) {
-    return res.status(404).json({ error: 'Topic not found' });
+function transformTopicArticle(article, topic, matchType) {
+  if (
+    !article ||
+    !article.title ||
+    !isValidHttpUrl(article.url)
+  ) {
+    return null;
   }
 
-  // Check cache (5 hour TTL)
+  return {
+    id: article.url,
+    title: article.title,
+    description:
+      article.description ||
+      article.content ||
+      "No description available.",
+    category: topic,
+    image:
+      article.image ||
+      "assets/images/refinery-modernization.jpg",
+    date:
+      article.publishedAt ||
+      article.date ||
+      new Date().toISOString(),
+    source:
+      article.source?.name ||
+      article.source ||
+      "News Source",
+    url: article.url,
+    matchType
+  };
+}
+
+function deduplicateArticles(articles) {
+  const seenUrls = new Set();
+  const seenTitles = new Set();
+
+  return articles.filter(article => {
+    const normalizedUrl =
+      String(article.url || "").trim().toLowerCase();
+
+    const normalizedTitle =
+      String(article.title || "").trim().toLowerCase();
+
+    if (!normalizedUrl || !normalizedTitle) {
+      return false;
+    }
+
+    if (
+      seenUrls.has(normalizedUrl) ||
+      seenTitles.has(normalizedTitle)
+    ) {
+      return false;
+    }
+
+    seenUrls.add(normalizedUrl);
+    seenTitles.add(normalizedTitle);
+    return true;
+  });
+}
+
+const topicQueries = {
+  financial:
+    '("Indian Oil" OR IndianOil OR IOCL) AND (profit OR revenue OR shares OR dividend OR financial OR results)',
+
+  recruitment:
+    '("Indian Oil" OR IndianOil OR IOCL) AND (recruitment OR jobs OR vacancy OR apprentice OR careers)',
+
+  digital:
+    '("Indian Oil" OR IndianOil OR IOCL) AND (digital OR technology OR automation OR artificial intelligence OR cybersecurity)',
+
+  barauni:
+    'Barauni AND (refinery OR IndianOil OR IOCL OR "Indian Oil")',
+
+  panipat:
+    'Panipat AND (refinery OR petrochemical OR IndianOil OR IOCL OR "Indian Oil")',
+
+  paradip:
+    'Paradip AND (refinery OR IndianOil OR IOCL OR "Indian Oil")',
+
+  mathura:
+    'Mathura AND (refinery OR IndianOil OR IOCL OR "Indian Oil")',
+
+  gujarat:
+    '"Gujarat Refinery" OR (Gujarat AND (IndianOil OR IOCL OR "Indian Oil"))',
+
+  haldia:
+    'Haldia AND (refinery OR IndianOil OR IOCL OR "Indian Oil")',
+
+  bongaigaon:
+    'Bongaigaon AND (refinery OR IndianOil OR IOCL OR "Indian Oil")',
+
+  guwahati:
+    '"Guwahati Refinery" OR (Guwahati AND (IndianOil OR IOCL OR "Indian Oil"))',
+
+  digboi:
+    'Digboi AND (refinery OR IndianOil OR IOCL OR "Indian Oil")'
+};
+
+const broaderTopicQueries = {
+  financial:
+    '"Indian Oil" OR IndianOil OR IOCL',
+
+  recruitment:
+    '"Indian Oil" OR IndianOil OR IOCL',
+
+  digital:
+    '"Indian Oil" OR IndianOil OR IOCL',
+
+  barauni:
+    'Barauni refinery',
+
+  panipat:
+    'Panipat refinery',
+
+  paradip:
+    'Paradip refinery',
+
+  mathura:
+    'Mathura refinery',
+
+  gujarat:
+    'Gujarat refinery',
+
+  haldia:
+    'Haldia refinery',
+
+  bongaigaon:
+    'Bongaigaon refinery',
+
+  guwahati:
+    'Guwahati refinery',
+
+  digboi:
+    'Digboi refinery'
+};
+
+async function fetchTopicFromGNews(query, topic, matchType) {
+  const apiKey = process.env.GNEWS_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("GNEWS_API_KEY not set");
+  }
+
+  const response = await axios.get(
+    "https://gnews.io/api/v4/search",
+    {
+      params: {
+        q: query,
+        lang: "en",
+        max: 10,
+        sortby: "relevance",
+        in: "title,description,content",
+        token: apiKey
+      },
+      timeout: 10000
+    }
+  );
+
+  const rawArticles = Array.isArray(
+    response.data?.articles
+  )
+    ? response.data.articles
+    : [];
+
+  console.log(
+    `Topic ${topic} (${matchType}):`,
+    response.data?.totalArticles || 0,
+    "total articles,",
+    rawArticles.length,
+    "returned"
+  );
+
+  return deduplicateArticles(
+    rawArticles
+      .map(article =>
+        transformTopicArticle(
+          article,
+          topic,
+          matchType
+        )
+      )
+      .filter(Boolean)
+  ).slice(0, 3);
+}
+
+app.get("/api/news/topic/:topic", async (req, res) => {
+  const topic = String(
+    req.params.topic || ""
+  ).toLowerCase();
+
+  const supportedTopics = [
+    "official",
+    "financial",
+    "recruitment",
+    "digital",
+    "barauni",
+    "panipat",
+    "paradip",
+    "mathura",
+    "gujarat",
+    "haldia",
+    "bongaigaon",
+    "guwahati",
+    "digboi"
+  ];
+
+  if (!supportedTopics.includes(topic)) {
+    return res.status(404).json({
+      error: "Topic not found"
+    });
+  }
+
   const cached = topicCaches[topic];
+
   if (
-  cached &&
-  cached.data &&
-  Date.now() - cached.timestamp < CACHE_TTL_MS
+    cached?.data?.length &&
+    Date.now() - cached.timestamp < CACHE_TTL_MS
   ) {
     return res.json(cached.data);
   }
 
   try {
-    const apiKey = process.env.GNEWS_API_KEY;
-    if (!apiKey) throw new Error('GNEWS_API_KEY not set');
+    let results = [];
 
-    const response = await axios.get('https://gnews.io/api/v4/search', {
-      params: {
-        q: topicQueries[topic],
-        lang: 'en',
-        country: 'in',
-        max: 10,
-        token: apiKey
+    if (topic === "official") {
+      const newsData = await getNewsData();
+      results = newsData
+        .filter(article =>
+          article &&
+          article.title &&
+          article.url &&
+          isValidHttpUrl(article.url)
+        )
+        .slice(0, 3)
+        .map(article => ({
+          ...article,
+          category: "official",
+          matchType: "direct-live"
+        }));
+    } else {
+      results = await fetchTopicFromGNews(
+        topicQueries[topic],
+        topic,
+        "direct-live"
+      );
+
+      if (results.length === 0) {
+        results = await fetchTopicFromGNews(
+          broaderTopicQueries[topic],
+          topic,
+          "broader-live"
+        );
       }
-    });
 
-    const articles = response.data.articles || [];
-    if (articles.length === 0) {
-      throw new Error('No articles returned from GNews');
+      if (results.length === 0) {
+        const newsData = await getNewsData();
+        results = newsData
+          .filter(article =>
+            article &&
+            article.title &&
+            article.url &&
+            isValidHttpUrl(article.url)
+          )
+          .slice(0, 3)
+          .map(article => ({
+            ...article,
+            category: topic,
+            matchType: "general-live"
+          }));
+      }
     }
 
-    const transformed = articles.slice(0, 3).map(a => ({
-      id: a.url,
-      title: a.title,
-      description: a.description,
-      category: topic,
-      image: a.image,
-      date: a.publishedAt,
-      source: a.source?.name || '',
-      url: a.url
-    }));
+    results = deduplicateArticles(results)
+      .filter(article =>
+        isValidHttpUrl(article.url)
+      )
+      .slice(0, 3);
 
-    // Cache the result
+    if (results.length === 0) {
+      return res.status(503).json({
+        error:
+          "No live IOCL news is currently available."
+      });
+    }
+
     topicCaches[topic] = {
-      data: transformed,
+      data: results,
       timestamp: Date.now()
     };
 
-    return res.json(transformed);
-  } catch (err) {
-    console.error(`Topic GNews fetch failed for ${topic}, falling back to static data:`, err.message);
-    try {
-      const fallbackPath = path.join(__dirname, 'data', 'topicFallback.json');
-      const fallbackRaw = fs.readFileSync(fallbackPath, 'utf8');
-      const fallbackJson = JSON.parse(fallbackRaw);
-      const topicFallback = fallbackJson[topic] || [];
-      return res.json(topicFallback);
-    } catch (fallbackErr) {
-      console.error(`Fallback data retrieval failed for ${topic}:`, fallbackErr);
-      return res.json([]);
+    return res.json(results);
+
+  } catch (error) {
+    console.error(
+      `Topic request failed for ${topic}:`,
+      error.response?.status ||
+      error.message
+    );
+
+    // Final live safety net:
+    // reuse already-cached main live news, if available.
+    const mainLiveNews = Array.isArray(cache.data)
+      ? cache.data
+          .filter(article =>
+            article &&
+            article.title &&
+            isValidHttpUrl(article.url)
+          )
+          .slice(0, 3)
+          .map(article => ({
+            ...article,
+            category: topic,
+            matchType: "general-live"
+          }))
+      : [];
+
+    if (mainLiveNews.length > 0) {
+      topicCaches[topic] = {
+        data: mainLiveNews,
+        timestamp: Date.now()
+      };
+
+      return res.json(mainLiveNews);
     }
+
+    return res.status(503).json({
+      error:
+        "Live news service is temporarily unavailable."
+    });
   }
-});
+}); // closes app.get('/api/news/topic/:topic')
 
-app.get('/api/news/top', async (req, res) => {
-  const news = await getNewsData();
-  res.json(news.slice(0, 10));
-});
+  app.get('/api/news/top', async (req, res) => {
+    const news = await getNewsData();
+    res.json(news.slice(0, 10));
+  });
 
-app.get('/api/news/featured', async (req, res) => {
-  const news = await getNewsData();
-  if (news.length > 0) {
-    res.json(news[0]);
-  } else {
-    res.status(404).json({ error: 'No featured news found' });
-  }
-});
+  app.get('/api/news/featured', async (req, res) => {
+    const news = await getNewsData();
 
-// Serve static assets from public directory
-app.use(express.static(path.join(__dirname, 'public')));
+    if (news.length > 0) {
+      res.json(news[0]);
+    } else {
+      res.status(404).json({
+        error: 'No featured news found'
+      });
+    }
+  });
 
-// Fallback to serve index.html for all other requests
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+  // Serve static assets from public directory
+  app.use(express.static(path.join(__dirname, 'public')));
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
-});
+  // Serve frontend for unmatched routes
+  app.get('*', (req, res) => {
+    res.sendFile(
+      path.join(__dirname, 'public', 'index.html')
+    );
+  });
+
+  app.listen(PORT, () => {
+    console.log(`Server is running at http://localhost:${PORT}`);
+  });
