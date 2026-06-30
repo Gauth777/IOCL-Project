@@ -2,7 +2,13 @@
 
 A real-time news monitoring and analytics platform for IndianOil Corporation Limited (IOCL) with a Node.js/Express backend and a dynamic frontend.
 
+## Development Directories
+
+- Frontend: repository root
+- Backend: /backend
+
 ## Project Structure
+
 
 ```text
 IOCL-Project/
